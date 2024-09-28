@@ -1,3 +1,9 @@
+import Layout from "../components/layout";
+
 export default function FriendsGoals() {
-    return <p>Friends' Goals</p>
+  return (
+    <Layout>
+      <p>Hello FriendsGoals</p>
+    </Layout>
+  );
 }

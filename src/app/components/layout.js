@@ -1,10 +1,13 @@
-import Navigation from './Navigation';
- 
+import Navigation from "./Navigation";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
 export default function Layout({ children }) {
   return (
     <>
-      <Navigation />
       <main>{children}</main>
+      <Navigation />
     </>
-  )
+  );
 }
