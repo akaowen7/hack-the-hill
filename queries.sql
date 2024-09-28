@@ -7,7 +7,7 @@ create table goals (
     todayProgress integer, -- amound the progress bar is filled
     totalProgress integer, -- total amount of progress needed to complete the goal
     defaultIncrement integer, -- amount to increment the progress bar by
-    frequencyType integer, -- 0 = daily, 1 = weekly, 2 = monthly
+    frequencyType integer, -- 1 = daily, 2 = weekly, 3 = monthly
 );  
 
 -- alter table goals add defaultIncrement integer;
