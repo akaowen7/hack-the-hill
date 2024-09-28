@@ -1,15 +1,19 @@
-import Image from "next/image";
-import Link from "next/link";
-import Layout from "./components/layout";
-import {Card} from "antd";
+import { Card, Button, Progress } from "antd";
 
 export default function Home() {
   return (
-    <Layout> 
-      <p>Hello</p>
-      <Card title="Card" >
-      <p>Card content</p>
-      </Card>
-    </Layout>
+    <Card title="Goal Name">
+      <div className="flex flex-col gap-4">
+        <p>[calendar/longer term progress]</p>
+        <Progress
+          type="line"
+          percent={50}
+          steps={3}
+          showInfo={false}
+        ></Progress>
+
+        <Button type="primary">Log</Button>
+      </div>
+    </Card>
   );
 }
