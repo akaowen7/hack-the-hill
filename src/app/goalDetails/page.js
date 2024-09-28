@@ -1,9 +1,9 @@
 import Layout from "../components/layout";
 
-export default function Home() {
+export default function GoalDetails() {
     return (
     <Layout>
-        <p>Hello about</p>
+        <p>goal details</p>
     </Layout>
       
     );
