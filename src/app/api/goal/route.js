@@ -18,14 +18,19 @@ export async function GET(request) {
 // add a goal
 export async function POST(request) {
   // const { searchParams } = new URL(request.url);
-  const { name, description, userId, defaultIncrement } = await request.json();
-  console.log({ name, description, userId, defaultIncrement });
+  const {
+    name,
+    description,
+    userId,
+    defaultIncrement,
+    totalProgress,
+    frequencyType,
+  } = await request.json();
 
   try {
-    // if (!goal) throw new Error("Goal is required");
     const { rows } =
-      await sql`insert into goals (name, description, user_id, defaultIncrement) 
-      values (${name}, ${description}, ${userId}, ${defaultIncrement}) returning id as id;`;
+      await sql`insert into goals (name, description, user_id, defaultIncrement, totalProgress, frequencyType) 
+      values (${name}, ${description}, ${userId}, ${defaultIncrement}, ${totalProgress}, ${frequencyType}) returning id as id;`;
     return NextResponse.json({ rows }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
@@ -48,19 +53,50 @@ export async function PUT(request) {
     // if (!goal) throw new Error("Goal is required");
     // const { rows } = await sql
 
-    let updates = [];
+    let stringParams = [];
+    let queryParams = [];
 
     // for each element of the request body, if it exists, add it to the updates array
-    if (name) updates.push(`name = '${name}'`);
-    if (description) updates.push(`description = '${description}'`);
-    if (defaultIncrement)
-      updates.push(`defaultIncrement = ${defaultIncrement}`);
-    if (completed) updates.push(`completed = ${completed}`);
-    if (todayProgress) updates.push(`todayProgress = ${todayProgress}`);
-    if (totalProgress) updates.push(`totalProgress = ${totalProgress}`);
+    if (name) {
+      stringParams.push(`name = $${stringParams.length + 1}`);
+      queryParams.push(name);
+    }
+    if (description) {
+      stringParams.push(`description = $${stringParams.length + 1}`);
+      queryParams.push(description);
+    }
+    if (defaultIncrement) {
+      stringParams.push(`defaultIncrement = '$${stringParams.length + 1}'`);
+      queryParams.push(defaultIncrement);
+    }
+    if (completed) {
+      stringParams.push(`completed = '$${stringParams.length + 1}'`);
+      queryParams.push(completed);
+    }
+    if (todayProgress) {
+      stringParams.push(`todayProgress = '$${stringParams.length + 1}'`);
+      queryParams.push(todayProgress);
+    }
+    if (totalProgress) {
+      stringParams.push(`totalProgress = '$${stringParams.length + 1}'`);
+      queryParams.push(totalProgress);
+    }
 
-    const { rows } =
-      await sql`update goals set name = 'asdfasd' where id = 1 returning id as id;`;
+    queryParams.push(goalId);
+
+    console.log({
+      a: `update goals set ${stringParams} where id = $${
+        stringParams.length + 1
+      } returning id as id;`,
+      queryParams,
+    });
+
+    const { rows } = await sql.query(
+      `update goals set ${stringParams} where id = $${
+        stringParams.length + 1
+      } returning id as id;`,
+      queryParams
+    );
     return NextResponse.json({ rows }, { status: 200 });
   } catch (error) {
     console.log({ error });

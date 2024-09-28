@@ -3,10 +3,11 @@ create table goals (
     name text not null,
     description text not null,
     user_id integer not null,
-    completed integer,
-    todayProgress integer,
-    totalProgress integer,
-    defaultIncrement integer
+    completed integer, -- binary rep of peg board
+    todayProgress integer, -- amound the progress bar is filled
+    totalProgress integer, -- total amount of progress needed to complete the goal
+    defaultIncrement integer, -- amount to increment the progress bar by
+    frequencyType integer, -- 0 = daily, 1 = weekly, 2 = monthly
 );  
 
 -- alter table goals add defaultIncrement integer;
