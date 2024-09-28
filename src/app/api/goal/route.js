@@ -43,15 +43,6 @@ export async function PUT(request) {
     todayProgress,
     totalProgress,
   } = await request.json();
-  console.log({
-    goalId,
-    name,
-    description,
-    defaultIncrement,
-    completed,
-    todayProgress,
-    totalProgress,
-  });
 
   try {
     // if (!goal) throw new Error("Goal is required");
@@ -60,17 +51,19 @@ export async function PUT(request) {
     let updates = [];
 
     // for each element of the request body, if it exists, add it to the updates array
-    for (const [key, value] of Object.entries(request.body)) {
-      if (value) {
-        updates.push(`${key} = ${value}`);
-      }
-    }
+    if (name) updates.push(`name = '${name}'`);
+    if (description) updates.push(`description = '${description}'`);
+    if (defaultIncrement)
+      updates.push(`defaultIncrement = ${defaultIncrement}`);
+    if (completed) updates.push(`completed = ${completed}`);
+    if (todayProgress) updates.push(`todayProgress = ${todayProgress}`);
+    if (totalProgress) updates.push(`totalProgress = ${totalProgress}`);
 
-    console.log(`update goals set 
-      ${updates.join(", ")}
-      where goalId = ${goalId} returning id as id;`);
+    const { rows } =
+      await sql`update goals set name = 'asdfasd' where id = 1 returning id as id;`;
     return NextResponse.json({ rows }, { status: 200 });
   } catch (error) {
+    console.log({ error });
     return NextResponse.json({ error }, { status: 500 });
   }
 }
