@@ -10,18 +10,22 @@ export default function PegBoard(props) {
   const binary = (props.num >>> 0).toString(2);
   if (props.type === "Pills") {
     for (let i = 0; i < binary.length; i++) {
-      if (binary[i] === "0") list.push(<Pills isRed />);
+      if (binary[i] === "0") list.push(<Pills isRed="1" />);
       else list.push(<Pills />);
     }
   } else {
     for (let i = 0; i < binary.length; i++) {
-      if (binary[i] === "0") list.push(<Dots colour="red" />);
+      if (binary[i] === "0") list.push(<Dots colour="gray" />);
       else list.push(<Dots colour="green" />);
     }
   }
   return (
     <>
-      <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg justify-between flex flex-row">
+      <div
+        className={`p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg justify-between grid ${
+          props.type === "Pills" ? "grid-cols-7" : "grid-cols-14"
+        } ${props.type === "Pills" ? "gap-x-8" : "gap-x-2"} gap-y-1`}
+      >
         {list}
       </div>
     </>
