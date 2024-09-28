@@ -4,52 +4,49 @@ import Layout from "../components/layout";
 import { Card, Button } from "antd";
 import React, { useState } from "react";
 
-// function showRepeatable(repeatable) {
-//   if (repeatable) {
-//     return (
-//       <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-//         <label>Repeatable Goal Frequency:</label>
-//         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-//           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-//             <label>Daily</label>
-//             <input type="radio" id="daily" name="repeat" value="daily" />
-//           </div>
-//           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-//             <label>Weekly</label>
-//             <input type="radio" id="weekly" name="repeat" value="weekly" />
-//           </div>
-//           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-//             <label>Monthly</label>
-//             <input type="radio" id="monthly" name="repeat" value="monthly" />
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   } else {
-//     return (
-//       <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-//         <label>Goal Deadline:</label>
-//         <input type="date" />
-//       </div>
-//     );
-//   }
-// }
-
 export default function CreateGoal() {
   //   const [repeatable, setRepeatable] = useState(false);
   const [goalName, setGoalName] = useState("");
   const [goalDescription, setGoalDescription] = useState("");
-  const [goalFrequency, setGoalFrequency] = useState(0);
-  const [defaultIncrement, setDefaultIncrement] = useState(0);
+  const [goalPeriod, setGoalPeriod] = useState(1);
+  const [goalTarget, setGoalTarget] = useState(3);
+  const [defaultIncrement, setDefaultIncrement] = useState(1);
 
-  //   const handleCheckboxChange = (event) => {
-  //     setRepeatable(event.target.checked);
-  //   };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const goalData = {
+      name: goalName,
+      description: goalDescription,
+      userId: -1, // -------------------------- TODO: Update this to the actual user ID
+      totalProgress: goalTarget,
+      frequencyType: goalPeriod,
+      defaultIncrement,
+    };
+
+    // Convert the object to a JSON string if needed
+    const goalDataJson = JSON.stringify(goalData);
+
+    // Send to database
+    try {
+      // Send a POST request to the API endpoint
+      const response = await fetch("http://localhost:3000/api/goal", {
+        method: "POST",
+        body: goalDataJson,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      console.log("Response Data:", responseData);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
     // Add your form submission logic here
-    console.log("Form submitted");
+    console.log(goalDataJson);
   };
 
   return (
@@ -74,15 +71,6 @@ export default function CreateGoal() {
               onChange={(e) => setGoalDescription(e.target.value)}
             />
           </div>
-          {/* <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-          <label>Repeatable Goal?</label>
-          <input
-            type="checkbox"
-            value={repeatable}
-            onChange={handleCheckboxChange}
-          />
-        </div>
-        {showRepeatable(repeatable)} */}
           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
             <label>Repeatable Goal Frequency:</label>
             <div
@@ -92,13 +80,27 @@ export default function CreateGoal() {
                 style={{ display: "flex", flexDirection: "row", gap: "10px" }}
               >
                 <label>Daily</label>
-                <input type="radio" id="daily" name="repeat" value="daily" />
+                <input
+                  type="radio"
+                  id="daily"
+                  name="repeat"
+                  value={0}
+                  checked={goalPeriod === 0}
+                  onChange={(e) => setGoalPeriod(Number(e.target.value))}
+                />
               </div>
               <div
                 style={{ display: "flex", flexDirection: "row", gap: "10px" }}
               >
                 <label>Weekly</label>
-                <input type="radio" id="weekly" name="repeat" value="weekly" />
+                <input
+                  type="radio"
+                  id="weekly"
+                  name="repeat"
+                  value={1}
+                  checked={goalPeriod === 1}
+                  onChange={(e) => setGoalPeriod(Number(e.target.value))}
+                />
               </div>
               <div
                 style={{ display: "flex", flexDirection: "row", gap: "10px" }}
@@ -108,29 +110,32 @@ export default function CreateGoal() {
                   type="radio"
                   id="monthly"
                   name="repeat"
-                  value="monthly"
+                  value={2}
+                  checked={goalPeriod === 2}
+                  onChange={(e) => setGoalPeriod(Number(e.target.value))}
                 />
               </div>
             </div>
           </div>
-
-          <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-            <label>Goal Frequency: </label>
-            <input
-              className="input-box"
-              type="number"
-              value={goalFrequency}
-              onChange={(e) => setGoalFrequency(e.target.value)}
-            />
-          </div>
-          <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-            <label>Default Increment: </label>
-            <input
-              className="input-box"
-              type="number"
-              value={defaultIncrement}
-              onChange={(e) => setDefaultIncrement(e.target.value)}
-            />
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-col gap-4">
+              <label>Goal Target: </label>
+              <input
+                className="input-box"
+                type="number"
+                value={goalTarget}
+                onChange={(e) => setGoalTarget(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <label>Default Increment: </label>
+              <input
+                className="input-box"
+                type="number"
+                value={defaultIncrement}
+                onChange={(e) => setDefaultIncrement(e.target.value)}
+              />
+            </div>
           </div>
 
           <Button type="primary" onClick={handleSubmit}>
