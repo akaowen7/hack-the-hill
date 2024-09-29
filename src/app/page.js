@@ -16,7 +16,7 @@ export default async function Home() {
   console.log(process.env.VERCEL_URL);
 
   const res = await fetch(
-    `${process.env.VERCEL_URL}/api/goals?userId=${userIdCookie.value}`
+    `http://${process.env.VERCEL_URL}/api/goals?userId=${userIdCookie.value}`
   );
   const goals = (await res.json()).rows;
   console.log(goals);

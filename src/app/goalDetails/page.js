@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Modal, InputNumber, Progress } from "antd";
 import { Suspense } from "react";
 
-function everything() {
+function Everything() {
   const searchParams = useSearchParams();
 
   const [goal, setGoal] = useState(null);
@@ -16,7 +16,12 @@ function everything() {
   console.log(searchParams.get("id"));
 
   useEffect(() => {
-    fetch(process.env.VERCEL_URL + "/api/goal?goalId=" + searchParams.get("id"))
+    fetch(
+      "http://" +
+        process.env.VERCEL_URL +
+        "/api/goal?goalId=" +
+        searchParams.get("id")
+    )
       .then((response) => response.json())
       .then((json) => {
         console.log(json.rows[0]);
@@ -77,7 +82,7 @@ export default function GoalDetails() {
   return (
     <Layout>
       <Suspense fallback={<p>Loading...</p>}>
-        <everything />
+        <Everything />
       </Suspense>
     </Layout>
   );

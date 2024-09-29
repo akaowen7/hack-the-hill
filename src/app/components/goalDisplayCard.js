@@ -10,10 +10,13 @@ async function logProgress(data) {
 
   const dataJson = JSON.stringify(data);
   try {
-    const response = await fetch(process.env.VERCEL_URL + "/api/goal", {
-      method: "PUT",
-      body: dataJson,
-    });
+    const response = await fetch(
+      "http://" + process.env.VERCEL_URL + "/api/goal",
+      {
+        method: "PUT",
+        body: dataJson,
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

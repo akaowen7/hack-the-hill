@@ -40,10 +40,13 @@ export default function CreateGoal() {
     // Send to database
     try {
       // Send a POST request to the API endpoint
-      const response = await fetch(process.env.VERCEL_URL + "/api/goal", {
-        method: "POST",
-        body: goalDataJson,
-      });
+      const response = await fetch(
+        "http://" + process.env.VERCEL_URL + "/api/goal",
+        {
+          method: "POST",
+          body: goalDataJson,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Network response was not ok");

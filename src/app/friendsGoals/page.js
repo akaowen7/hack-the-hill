@@ -17,12 +17,12 @@ export default function Home() {
     event.preventDefault(); // Prevent page reload
     console.log(username.json);
     const getId = await fetch(
-      process.env.VERCEL_URL + "api/users?username=" + username
+      "http://" + process.env.VERCEL_URL + "api/users?username=" + username
     );
     const id = await getId.json();
     console.log(id.user.id);
     const res = await fetch(
-      process.env.VERCEL_URL + "/api/goals?userId=" + id.user.id
+      "http://" + process.env.VERCEL_URL + "/api/goals?userId=" + id.user.id
     ); // Fetch goals from API
     const data = await res.json();
     setGoals(data.rows); // Set goals in state
