@@ -36,6 +36,8 @@ export default function GoalDisplayCard({ goal }) {
 
   const [isLoggingOpen, setIsLoggingOpen] = useState(false);
   const [incrementValue, setIncrementValue] = useState(frequencyinterval);
+  const [updatedTodayProgress, setUpdatedTodayProgress] =
+    useState(todayprogress);
 
   const router = useRouter();
 
@@ -60,7 +62,7 @@ export default function GoalDisplayCard({ goal }) {
           </p>
           <Progress
             type="line"
-            percent={(100 * todayprogress) / totalprogress}
+            percent={(100 * updatedTodayProgress) / totalprogress}
             steps={totalprogress}
             showInfo={false}
           ></Progress>
@@ -81,8 +83,9 @@ export default function GoalDisplayCard({ goal }) {
           onOk={() => {
             logProgress({
               goalId: goal.id,
-              todayProgress: incrementValue + todayprogress,
+              todayProgress: incrementValue + updatedTodayProgress,
             });
+            setUpdatedTodayProgress(updatedTodayProgress + incrementValue);
             setIsLoggingOpen(false);
           }}
         >
