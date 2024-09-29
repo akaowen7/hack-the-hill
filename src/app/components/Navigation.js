@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center justify-between">
+      <div className="sticky bottom-0 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center justify-between">
         <Link href="../">
           <FontAwesomeIcon
             icon={faHome}

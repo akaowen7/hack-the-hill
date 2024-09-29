@@ -30,6 +30,13 @@ export default function Login() {
   return (
     <div className="h-screen w-screen flex justify-center">
       <div className="flex flex-col gap-4 my-auto">
+        <p className="flex text-center">
+          Enter your username
+          <br />
+          <br />
+          If you do not have an account, one will be created for you
+          <br />
+        </p>
         <Input
           placeholder="Username"
           value={username}
