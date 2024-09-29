@@ -13,8 +13,10 @@ export default async function Home() {
     redirect("/login");
   }
 
+  console.log(process.env.VERCEL_URL);
+
   const res = await fetch(
-    `http://localhost:3000/api/goals?userId=${userIdCookie.value}`
+    `${process.env.VERCEL_URL}/api/goals?userId=${userIdCookie.value}`
   );
   const goals = (await res.json()).rows;
   console.log(goals);

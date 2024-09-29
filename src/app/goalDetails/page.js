@@ -16,7 +16,7 @@ function everything() {
   console.log(searchParams.get("id"));
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/goal?goalId=" + searchParams.get("id"))
+    fetch(process.env.VERCEL_URL + "/api/goal?goalId=" + searchParams.get("id"))
       .then((response) => response.json())
       .then((json) => {
         console.log(json.rows[0]);

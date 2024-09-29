@@ -10,7 +10,7 @@ async function logProgress(data) {
 
   const dataJson = JSON.stringify(data);
   try {
-    const response = await fetch("http://localhost:3000/api/goal", {
+    const response = await fetch(process.env.VERCEL_URL + "/api/goal", {
       method: "PUT",
       body: dataJson,
     });
