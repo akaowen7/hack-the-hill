@@ -2,67 +2,85 @@
 
 import Layout from "../components/layout";
 import { useSearchParams } from "next/navigation";
+import PegBoard from "../components/pegBoard/pegBoard";
+import React, { useState, useEffect } from "react";
+import { Card, Button, Modal, InputNumber, Progress } from "antd";
 
-export default async function GoalDetails() {
+export default function GoalDetails() {
   // Get the goalID from the URL
   const searchParams = useSearchParams();
-  const res = await fetch(
-    "http://localhost:3000/api/goal?id=" + searchParams.get("id")
-  );
-  const goal = (await res.json()).rows;
 
-  const {
-    name,
-    todayProgress,
-    totalProgress,
-    frequencyInterval,
-    completed,
-    defaultIncrement,
-    id,
-  } = goal;
-  return (
-    <Card title={name}>
-      <div className="flex flex-col gap-4">
-        <p>{isLoggingOpen}</p>
-        <PegBoard
-          num={completed}
-          type={frequencyInterval === 1 ? "Dots" : "Pills"}
-        />
-        <div>
-          <p>
-            {frequencyInterval === 1
-              ? "Today's progress: "
-              : "This week's progress:"}
-          </p>
-          <Progress
-            type="line"
-            percent={(100 * todayProgress) / totalProgress}
-            steps={totalProgress}
-            showInfo={false}
-          ></Progress>
-        </div>
+  const [goal, setGoal] = useState(null);
+  const [isLoggingOpen, setIsLoggingOpen] = useState(false);
 
-        <Button type="primary" onClick={() => setIsLoggingOpen(true)}>
-          Log
-        </Button>
+  console.log(searchParams.get("id"));
 
-        <Button type="primary" onClick={() => sendToDetails(id)}>
-          View Details
-        </Button>
+  useEffect(() => {
+    fetch("http://localhost:3000/api/goal?goalId=" + searchParams.get("id"))
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.rows[0]);
+        return setGoal(json.rows[0]);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
-        <Modal
-          title={name}
-          open={isLoggingOpen}
-          onCancel={() => setIsLoggingOpen(false)}
-        >
-          <p>Increment by </p>
-          <InputNumber
-            min={0}
-            max={defaultIncrement * 10}
-            defaultValue={defaultIncrement}
+  // const {
+  //   name,
+  //   todayProgress,
+  //   totalProgress,
+  //   frequencyInterval,
+  //   completed,
+  //   defaultIncrement,
+  //   id,
+  // } = goal;
+  if (goal) {
+    return (
+      <Card title={goal.name}>
+        <div className="flex flex-col gap-4">
+          <p>{isLoggingOpen}</p>
+          <PegBoard
+            num={goal.completed}
+            type={goal.frequencyInterval === 1 ? "Dots" : "Pills"}
           />
-        </Modal>
-      </div>
-    </Card>
-  );
+          <div>
+            <p>
+              {goal.frequencyInterval === 1
+                ? "Today's progress: "
+                : "This week's progress:"}
+            </p>
+            <Progress
+              type="line"
+              percent={(100 * goal.todayProgress) / goal.totalProgress}
+              steps={goal.totalProgress}
+              showInfo={false}
+            ></Progress>
+          </div>
+
+          <Button type="primary" onClick={() => setIsLoggingOpen(true)}>
+            Log
+          </Button>
+
+          <Button type="primary" onClick={() => sendToDetails(goal.id)}>
+            View Details
+          </Button>
+
+          <Modal
+            title={goal.name}
+            open={goal.isLoggingOpen}
+            onCancel={() => setIsLoggingOpen(false)}
+          >
+            <p>Increment by </p>
+            <InputNumber
+              min={0}
+              max={goal.defaultIncrement * 10}
+              defaultValue={goal.defaultIncrement}
+            />
+          </Modal>
+        </div>
+      </Card>
+    );
+  } else {
+    return <p>Loading...</p>;
+  }
 }
