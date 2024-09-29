@@ -8,16 +8,21 @@ export default function PegBoard(props) {
   const list = [];
   // convert numDots to binary
   const binary = (props.num >>> 0).toString(2);
+
+  const todayColor = props.todayCompleted ? "green" : "gray";
+
   if (props.type === "Pills") {
     for (let i = 0; i < binary.length; i++) {
-      if (binary[i] === "0") list.push(<Pills isRed="1" />);
-      else list.push(<Pills />);
+      if (binary[i] === "0") list.push(<Pills color="red" />);
+      else list.push(<Pills color="green" />);
     }
+    list.push(<Pills color={todayColor} />);
   } else {
     for (let i = 0; i < binary.length; i++) {
-      if (binary[i] === "0") list.push(<Dots colour="gray" />);
-      else list.push(<Dots colour="green" />);
+      if (binary[i] === "0") list.push(<Dots color="red" />);
+      else list.push(<Dots color="green" />);
     }
+    list.push(<Dots color={todayColor} />);
   }
   return (
     <>
