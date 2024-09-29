@@ -5,12 +5,13 @@ import PegBoard from "./pegBoard/pegBoard";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-async function logProgress(newProgressAmount) {
-  const dataJson = JSON.stringify({ todayProgress: newProgressAmount });
+async function logProgress(data) {
+  console.log(data);
+
+  const dataJson = JSON.stringify(data);
   try {
-    // Send a POST request to the API endpoint
     const response = await fetch("http://localhost:3000/api/goal", {
-      method: "POST",
+      method: "PUT",
       body: dataJson,
     });
 
@@ -25,16 +26,16 @@ async function logProgress(newProgressAmount) {
 export default function GoalDisplayCard({ goal }) {
   const {
     name,
-    todayProgress,
-    totalProgress,
-    frequencyInterval,
+    todayprogress,
+    totalprogress,
+    frequencyinterval,
     completed,
-    defaultIncrement,
+    defaultincrement,
     id,
   } = goal;
 
   const [isLoggingOpen, setIsLoggingOpen] = useState(false);
-  const [incrementValue, setIncrementValue] = useState(frqeuncyInterval);
+  const [incrementValue, setIncrementValue] = useState(frequencyinterval);
 
   const router = useRouter();
 
@@ -49,18 +50,18 @@ export default function GoalDisplayCard({ goal }) {
         <p>{isLoggingOpen}</p>
         <PegBoard
           num={completed}
-          type={frequencyInterval === 1 ? "Dots" : "Pills"}
+          type={frequencyinterval === 1 ? "Dots" : "Pills"}
         />
         <div>
           <p>
-            {frequencyInterval === 1
+            {frequencyinterval === 1
               ? "Today's progress: "
               : "This week's progress:"}
           </p>
           <Progress
             type="line"
-            percent={(100 * todayProgress) / totalProgress}
-            steps={totalProgress}
+            percent={(100 * todayprogress) / totalprogress}
+            steps={totalprogress}
             showInfo={false}
           ></Progress>
         </div>
@@ -77,13 +78,20 @@ export default function GoalDisplayCard({ goal }) {
           title={name}
           open={isLoggingOpen}
           onCancel={() => setIsLoggingOpen(false)}
-          onOk={() => logProgress(todayProgress + incrementValue)}
+          onOk={() => {
+            logProgress({
+              goalId: goal.id,
+              todayProgress: incrementValue + todayprogress,
+            });
+            setIsLoggingOpen(false);
+          }}
         >
           <p>Increment by </p>
           <InputNumber
             min={0}
-            max={defaultIncrement * 10}
+            max={defaultincrement * 10}
             value={incrementValue}
+            onChange={(e) => setIncrementValue(e)}
           />
         </Modal>
       </div>
