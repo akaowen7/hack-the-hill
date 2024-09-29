@@ -29,8 +29,8 @@ export async function POST(request) {
 
   try {
     const { rows } =
-      await sql`insert into goals (name, description, user_id, defaultIncrement, totalProgress, frequencyType) 
-      values (${name}, ${description}, ${userId}, ${defaultIncrement}, ${totalProgress}, ${frequencyType}) returning id as id;`;
+      await sql`insert into goals (name, description, user_id, defaultIncrement, totalProgress, frequencyType, completed, todayProgress) 
+      values (${name}, ${description}, ${userId}, ${defaultIncrement}, ${totalProgress}, ${frequencyType}, 0, 0) returning id as id;`;
     return NextResponse.json({ rows }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
