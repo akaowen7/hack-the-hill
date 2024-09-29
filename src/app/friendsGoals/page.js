@@ -5,6 +5,8 @@ import PegBoard from "../components/pegBoard/pegBoard";
 import Layout from "../components/layout";
 import React, { useState } from "react";
 import GoalDisplayCard from "../components/goalDisplayCard";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [goals, setGoals] = useState([]); // Use state to store goals
@@ -13,13 +15,18 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent page reload
-    console.log(username);
-    const res = await fetch(
-      "http://localhost:3000/api/goals?userId=" + username
+    console.log(username.json);
+    const getId = await fetch(
+      "http://localhost:3000/api/users?username=" + username
     );
+    const id = await getId.json();
+    console.log(id.user.id);
+    const res = await fetch(
+      "http://localhost:3000/api/goals?userId=" + id.user.id
+    ); // Fetch goals from API
     const data = await res.json();
     setGoals(data.rows); // Set goals in state
-    console.log(data.rows);
+    console.log(goals);
     setSearched(true); // Mark search as completed
   };
 
@@ -34,7 +41,7 @@ export default function Home() {
             onChange={(e) => setUsername(e.target.value)}
           />
           <Button type="primary" onClick={handleSubmit}>
-            Login / Sign Up
+            Search
           </Button>
         </div>
       </div>
