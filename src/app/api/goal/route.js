@@ -65,19 +65,19 @@ export async function PUT(request) {
       queryParams.push(description);
     }
     if (defaultIncrement) {
-      stringParams.push(`defaultIncrement = '$${stringParams.length + 1}'`);
+      stringParams.push(`defaultIncrement = $${stringParams.length + 1}`);
       queryParams.push(defaultIncrement);
     }
     if (completed) {
-      stringParams.push(`completed = '$${stringParams.length + 1}'`);
+      stringParams.push(`completed = $${stringParams.length + 1}`);
       queryParams.push(completed);
     }
     if (todayProgress) {
-      stringParams.push(`todayProgress = '$${stringParams.length + 1}'`);
+      stringParams.push(`todayProgress = $${stringParams.length + 1}`);
       queryParams.push(todayProgress);
     }
     if (totalProgress) {
-      stringParams.push(`totalProgress = '$${stringParams.length + 1}'`);
+      stringParams.push(`totalProgress = $${stringParams.length + 1}`);
       queryParams.push(totalProgress);
     }
 
