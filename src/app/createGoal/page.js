@@ -41,7 +41,9 @@ export default function CreateGoal() {
     try {
       // Send a POST request to the API endpoint
       const response = await fetch(
-        process.env.HTTP_URL + process.env.VERCEL_URL + "/api/goal",
+        process.env.NEXT_PUBLIC_HTTP_URL +
+          process.env.NEXT_PUBLIC_VERCEL_URL +
+          "/api/goal",
         {
           method: "POST",
           body: goalDataJson,
@@ -137,7 +139,7 @@ export default function CreateGoal() {
             <div className="flex flex-col gap-4">
               <label>Goal Target: </label>
               <input
-                className="input-box"
+                className="input-box w-28"
                 type="number"
                 value={goalTarget}
                 onChange={(e) => setGoalTarget(e.target.value)}
@@ -146,7 +148,7 @@ export default function CreateGoal() {
             <div className="flex flex-col gap-4">
               <label>Default Increment: </label>
               <input
-                className="input-box"
+                className="input-box w-28"
                 type="number"
                 value={defaultIncrement}
                 onChange={(e) => setDefaultIncrement(e.target.value)}

@@ -15,21 +15,16 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent page reload
-    console.log(username.json);
     const getId = await fetch(
-      process.env.HTTP_URL +
-        process.env.VERCEL_URL +
-        "api/users?username=" +
-        username
+      `${process.env.NEXT_PUBLIC_HTTP_URL}${process.env.NEXT_PUBLIC_VERCEL_URL}/api/users?username=${username}`
     );
+    console.log(getId);
     const id = await getId.json();
     console.log(id.user.id);
     const res = await fetch(
-      process.env.HTTP_URL +
-        process.env.VERCEL_URL +
-        "/api/goals?userId=" +
-        id.user.id
+      `${process.env.NEXT_PUBLIC_HTTP_URL}${process.env.NEXT_PUBLIC_VERCEL_URL}/api/goals?userId=${id.user.id}`
     ); // Fetch goals from API
+    console.log(res);
     const data = await res.json();
     setGoals(data.rows); // Set goals in state
     console.log(goals);
@@ -38,7 +33,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className=" w-screen flex justify-center">
+      <div className="w-auto flex justify-center">
         <div className="flex flex-col gap-4 my-auto">
           <Input
             placeholder="Username"

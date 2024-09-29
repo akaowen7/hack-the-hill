@@ -11,7 +11,9 @@ async function logProgress(data) {
   const dataJson = JSON.stringify(data);
   try {
     const response = await fetch(
-      process.env.HTTP_URL + process.env.VERCEL_URL + "/api/goal",
+      process.env.NEXT_PUBLIC_HTTP_URL +
+        process.env.NEXT_PUBLIC_VERCEL_URL +
+        "/api/goal",
       {
         method: "PUT",
         body: dataJson,
@@ -52,7 +54,7 @@ export default function GoalDisplayCard({ goal }) {
   }
 
   return (
-    <Card title={name}>
+    <Card title={name} className="mb-4">
       <div className="flex flex-col gap-4">
         <p>{isLoggingOpen}</p>
         <PegBoard
