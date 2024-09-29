@@ -39,6 +39,7 @@ export default function GoalDetails() {
       <Layout>
         <Card title={goal.name}>
           <div className="flex flex-col gap-4">
+            <p>{goal.description}</p>
             <p>{isLoggingOpen}</p>
             <PegBoard
               num={goal.completed}
@@ -84,9 +85,9 @@ export default function GoalDetails() {
     );
   } else {
     return (
-    <Layout>
-      <p>Loading...</p>
-    </Layout>
+      <Layout>
+        <p>Loading...</p>
+      </Layout>
     );
   }
 }
