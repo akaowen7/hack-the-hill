@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Button, Progress, Modal } from "antd";
+import { Card, Button, Progress, Modal, InputNumber } from "antd";
 import PegBoard from "./pegBoard/pegBoard";
 import { useState } from "react";
 
@@ -16,8 +16,14 @@ export default function GoalDisplayCard({ goal }) {
   //   </>
   // );
 
-  const { name, todayProgress, totalProgress, frqeuncyInterval, completed } =
-    goal;
+  const {
+    name,
+    todayProgress,
+    totalProgress,
+    frqeuncyInterval,
+    completed,
+    defaultIncrement,
+  } = goal;
   return (
     <Card title={name}>
       <div className="flex flex-col gap-4">
@@ -44,7 +50,18 @@ export default function GoalDisplayCard({ goal }) {
           Log
         </Button>
 
-        <Modal title={name} open={isLoggingOpen}></Modal>
+        <Modal
+          title={name}
+          open={isLoggingOpen}
+          onCancel={() => setIsLoggingOpen(false)}
+        >
+          <p>Increment by </p>
+          <InputNumber
+            min={0}
+            max={defaultIncrement * 10}
+            defaultValue={defaultIncrement}
+          />
+        </Modal>
       </div>
     </Card>
   );
