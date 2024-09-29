@@ -1,10 +1,12 @@
 import Layout from "../components/layout";
+import { useParams } from "react-router-dom";
 
 export default function GoalDetails() {
-    return (
+  const { id } = useParams();
+
+  return (
     <Layout>
-        <p>goal details</p>
+      <p>goal details {id}</p>
     </Layout>
-      
-    );
-  }
+  );
+}
