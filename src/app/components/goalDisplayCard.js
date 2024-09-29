@@ -28,14 +28,16 @@ export default function GoalDisplayCard({ goal }) {
     name,
     todayprogress,
     totalprogress,
-    frequencyinterval,
+    frequencytype,
     completed,
     defaultincrement,
     id,
   } = goal;
 
+  console.log(goal);
+
   const [isLoggingOpen, setIsLoggingOpen] = useState(false);
-  const [incrementValue, setIncrementValue] = useState(frequencyinterval);
+  const [incrementValue, setIncrementValue] = useState(defaultincrement);
   const [updatedTodayProgress, setUpdatedTodayProgress] =
     useState(todayprogress);
 
@@ -52,12 +54,12 @@ export default function GoalDisplayCard({ goal }) {
         <p>{isLoggingOpen}</p>
         <PegBoard
           num={completed}
-          type={frequencyinterval === 1 ? "Dots" : "Pills"}
+          type={frequencytype === 0 ? "Dots" : "Pills"}
           todayCompleted={updatedTodayProgress >= totalprogress}
         />
         <div>
           <p>
-            {frequencyinterval === 1
+            {frequencytype === 0
               ? "Today's progress: "
               : "This week's progress:"}
           </p>
