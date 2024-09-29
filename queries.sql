@@ -10,11 +10,18 @@ create table goals (
     frequencyType integer -- 1 = daily, 2 = weekly, 3 = monthly
 );  
 
--- alter table goals add defaultIncrement integer;
+-- alter table goals add sharedGoalId integer;
+-- remove column sharedGoalId from goals;
+alter table goals drop column sharedGoalId integer;
 
 create table users (
     id serial primary key,
     name text not null
+);
+
+create table sharedGoals (
+    id serial primary key,
+    goal_ids integer[]
 );
 
 -- 
