@@ -47,6 +47,9 @@ export default function CreateGoal() {
 
     // Add your form submission logic here
     console.log(goalDataJson);
+
+    // redirect to the goals page
+    window.location.href = "/";
   };
 
   return (
