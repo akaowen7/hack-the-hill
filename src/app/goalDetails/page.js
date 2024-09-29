@@ -36,51 +36,57 @@ export default function GoalDetails() {
   // } = goal;
   if (goal) {
     return (
-      <Card title={goal.name}>
-        <div className="flex flex-col gap-4">
-          <p>{isLoggingOpen}</p>
-          <PegBoard
-            num={goal.completed}
-            type={goal.frequencyInterval === 1 ? "Dots" : "Pills"}
-          />
-          <div>
-            <p>
-              {goal.frequencyInterval === 1
-                ? "Today's progress: "
-                : "This week's progress:"}
-            </p>
-            <Progress
-              type="line"
-              percent={(100 * goal.todayProgress) / goal.totalProgress}
-              steps={goal.totalProgress}
-              showInfo={false}
-            ></Progress>
-          </div>
-
-          <Button type="primary" onClick={() => setIsLoggingOpen(true)}>
-            Log
-          </Button>
-
-          <Button type="primary" onClick={() => sendToDetails(goal.id)}>
-            View Details
-          </Button>
-
-          <Modal
-            title={goal.name}
-            open={goal.isLoggingOpen}
-            onCancel={() => setIsLoggingOpen(false)}
-          >
-            <p>Increment by </p>
-            <InputNumber
-              min={0}
-              max={goal.defaultIncrement * 10}
-              defaultValue={goal.defaultIncrement}
+      <Layout>
+        <Card title={goal.name}>
+          <div className="flex flex-col gap-4">
+            <p>{isLoggingOpen}</p>
+            <PegBoard
+              num={goal.completed}
+              type={goal.frequencyInterval === 1 ? "Dots" : "Pills"}
             />
-          </Modal>
-        </div>
-      </Card>
+            <div>
+              <p>
+                {goal.frequencyInterval === 1
+                  ? "Today's progress: "
+                  : "This week's progress:"}
+              </p>
+              <Progress
+                type="line"
+                percent={(100 * goal.todayProgress) / goal.totalProgress}
+                steps={goal.totalProgress}
+                showInfo={false}
+              ></Progress>
+            </div>
+
+            <Button type="primary" onClick={() => setIsLoggingOpen(true)}>
+              Log
+            </Button>
+
+            <Button type="primary" onClick={() => sendToDetails(goal.id)}>
+              View Details
+            </Button>
+
+            <Modal
+              title={goal.name}
+              open={goal.isLoggingOpen}
+              onCancel={() => setIsLoggingOpen(false)}
+            >
+              <p>Increment by </p>
+              <InputNumber
+                min={0}
+                max={goal.defaultIncrement * 10}
+                defaultValue={goal.defaultIncrement}
+              />
+            </Modal>
+          </div>
+        </Card>
+      </Layout>
     );
   } else {
-    return <p>Loading...</p>;
+    return (
+    <Layout>
+      <p>Loading...</p>
+    </Layout>
+    );
   }
 }

@@ -17,6 +17,8 @@ create table users (
     name text not null
 );
 
+-- 
+
 -- add a dummy user
 insert into users (name) values ('');
 
