@@ -28,6 +28,7 @@ function everything() {
   return (
     <Card title={goal.name}>
       <div className="flex flex-col gap-4">
+        <p>{goal.description}</p>
         <p>{isLoggingOpen}</p>
         <PegBoard
           num={goal.completed}

@@ -53,6 +53,7 @@ export default function GoalDisplayCard({ goal }) {
         <PegBoard
           num={completed}
           type={frequencyinterval === 1 ? "Dots" : "Pills"}
+          todayCompleted={updatedTodayProgress >= totalprogress}
         />
         <div>
           <p>
