@@ -32,11 +32,11 @@ function everything() {
         <p>{isLoggingOpen}</p>
         <PegBoard
           num={goal.completed}
-          type={goal.frequencyInterval === 1 ? "Dots" : "Pills"}
+          type={goal.frequencytype === 1 ? "Dots" : "Pills"}
         />
         <div>
           <p>
-            {goal.frequencyInterval === 1
+            {goal.frequencytype === 1
               ? "Today's progress: "
               : "This week's progress:"}
           </p>
