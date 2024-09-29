@@ -3,9 +3,11 @@
 import { Card, Button, Progress, Modal, InputNumber } from "antd";
 import PegBoard from "./pegBoard/pegBoard";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function GoalDisplayCard({ goal }) {
   const [isLoggingOpen, setIsLoggingOpen] = useState(false);
+  const router = useRouter();
 
   // return (
   //   <>
@@ -16,13 +18,19 @@ export default function GoalDisplayCard({ goal }) {
   //   </>
   // );
 
+  function sendToDetails(id) {
+    console.log("goal id: ", id);
+    router.push(`/goalDetails?id=${id}`);
+  }
+
   const {
     name,
     todayProgress,
     totalProgress,
-    frqeuncyInterval,
+    frequencyInterval,
     completed,
     defaultIncrement,
+    id,
   } = goal;
   return (
     <Card title={name}>
@@ -30,11 +38,11 @@ export default function GoalDisplayCard({ goal }) {
         <p>{isLoggingOpen}</p>
         <PegBoard
           num={completed}
-          type={frqeuncyInterval === 1 ? "Dots" : "Pills"}
+          type={frequencyInterval === 1 ? "Dots" : "Pills"}
         />
         <div>
           <p>
-            {frqeuncyInterval === 1
+            {frequencyInterval === 1
               ? "Today's progress: "
               : "This week's progress:"}
           </p>
@@ -48,6 +56,10 @@ export default function GoalDisplayCard({ goal }) {
 
         <Button type="primary" onClick={() => setIsLoggingOpen(true)}>
           Log
+        </Button>
+
+        <Button type="primary" onClick={() => sendToDetails(id)}>
+          View Details
         </Button>
 
         <Modal

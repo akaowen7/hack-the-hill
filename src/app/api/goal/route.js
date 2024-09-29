@@ -8,7 +8,7 @@ export async function GET(request) {
   try {
     if (!userId) throw new Error("Goal ID is required");
     const { rows, fields } =
-      await sql`select * from goals where goal_id = ${goalId};`;
+      await sql`select * from goals where id = ${goalId};`;
     return NextResponse.json({ rows }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
