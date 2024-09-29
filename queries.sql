@@ -14,9 +14,11 @@ create table goals (
 
 create table users (
     id serial primary key,
-    name text not null,
-    email text not null,
+    name text not null
 );
+
+-- add a dummy user
+insert into users (name) values ('');
 
 -- get all goals for a user
 select * from goals where user_id = 

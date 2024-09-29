@@ -3,8 +3,18 @@
 import Layout from "../components/layout";
 import { Card, Button } from "antd";
 import React, { useState } from "react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function CreateGoal() {
+  const router = useRouter();
+
+  // if no user id cookie, redirect to login page
+  const userId = Cookies.get("userId");
+  if (!userId) {
+    router.push("/login");
+  }
+
   //   const [repeatable, setRepeatable] = useState(false);
   const [goalName, setGoalName] = useState("");
   const [goalDescription, setGoalDescription] = useState("");
@@ -18,7 +28,7 @@ export default function CreateGoal() {
     const goalData = {
       name: goalName,
       description: goalDescription,
-      userId: -1, // -------------------------- TODO: Update this to the actual user ID
+      userId: userId, // -------------------------- TODO: Update this to the actual user ID
       totalProgress: goalTarget,
       frequencyType: goalPeriod,
       defaultIncrement,
@@ -49,7 +59,7 @@ export default function CreateGoal() {
     console.log(goalDataJson);
 
     // redirect to the goals page
-    window.location.href = "/";
+    router.push("/");
   };
 
   return (

@@ -1,43 +1,46 @@
-import { Card, Button, Progress } from "antd";
+"use client";
+
+import { Card, Button, Progress, Input } from "antd";
 import PegBoard from "../components/pegBoard/pegBoard";
 import Layout from "../components/layout";
+import React, { useState } from "react";
+import GoalDisplayCard from "../components/goalDisplayCard";
 
-export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/goals?userId=-1");
-  const goals = (await res.json()).rows;
+export default function Home() {
+  const [goals, setGoals] = useState([]); // Use state to store goals
+  const [username, setUsername] = useState("");
+  const [searched, setSearched] = useState(false);
 
-  console.log(goals);
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent page reload
+    console.log(username);
+    const res = await fetch(
+      "http://localhost:3000/api/goals?userId=" + username
+    );
+    const data = await res.json();
+    setGoals(data.rows); // Set goals in state
+    console.log(data.rows);
+    setSearched(true); // Mark search as completed
+  };
+
   return (
     <Layout>
-      {goals.map((goal) => {
-        const { name, todayprogress, totalprogress, frqeuncytype, completed } =
-          goal;
-        return (
-          <Card title={name}>
-            <div className="flex flex-col gap-4">
-              <PegBoard
-                num={completed}
-                type={frqeuncytype === 1 ? "Dots" : "Pills"}
-              />
-              <div>
-                <p>
-                  {frqeuncytype === 1
-                    ? "Today's progress: "
-                    : "This week's progress:"}
-                </p>
-                <Progress
-                  type="line"
-                  percent={(100 * todayprogress) / totalprogress}
-                  steps={totalprogress}
-                  showInfo={false}
-                ></Progress>
-              </div>
+      <div className=" w-screen flex justify-center">
+        <div className="flex flex-col gap-4 my-auto">
+          <Input
+            placeholder="Username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Button type="primary" onClick={handleSubmit}>
+            Login / Sign Up
+          </Button>
+        </div>
+      </div>
 
-              <Button type="primary">Log</Button>
-            </div>
-          </Card>
-        );
-      })}
+      {searched &&
+        goals.map((goal) => <GoalDisplayCard goal={goal} key={goal.id} />)}
     </Layout>
   );
 }
