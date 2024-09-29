@@ -17,7 +17,7 @@ function Everything() {
 
   useEffect(() => {
     fetch(
-      "http://" +
+      process.env.HTTP_URL +
         process.env.VERCEL_URL +
         "/api/goal?goalId=" +
         searchParams.get("id")

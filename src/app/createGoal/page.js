@@ -41,7 +41,7 @@ export default function CreateGoal() {
     try {
       // Send a POST request to the API endpoint
       const response = await fetch(
-        "http://" + process.env.VERCEL_URL + "/api/goal",
+        process.env.HTTP_URL + process.env.VERCEL_URL + "/api/goal",
         {
           method: "POST",
           body: goalDataJson,
